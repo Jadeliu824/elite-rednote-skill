@@ -38,7 +38,7 @@ Run the eight stages in order for a full production. For a partial request, star
 | 2 | Research | Verified facts + tracked sources | `workflows/research.md` + `references/research-standards.md` → `templates/research-notes.md` |
 | 3 | Editorial Strategy | Target reader, core question, argument, angle | `workflows/editorial-strategy.md` → `templates/editorial-brief.md` |
 | 4 | Writing | The post copy (Chinese) | `workflows/content-production.md` + `references/editorial-guidelines.md` → `templates/carousel.md` or `templates/single-post.md` |
-| 5 | Visual Production | Cover + slide/image design instructions | `workflows/visual-production.md` + `references/visual-guidelines.md` → `templates/visual-spec.md` |
+| 5 | Visual Production | Cover + slide design, then rendered PNG carousel cards | `workflows/visual-production.md` + `references/visual-guidelines.md` → `templates/visual-spec.md` + `scripts/render_carousel.py` |
 | 6 | Optimization | Title, keywords, hashtags, description | `workflows/optimization.md` + `references/platform-guidelines.md` → `templates/publishing-copy.md` |
 | 7 | Quality Assurance | Pass / revise / reject verdict | `workflows/quality-assurance.md` |
 | 8 | Performance Review | Learning loop back into Stage 1 | `workflows/performance-review.md` |
@@ -61,7 +61,7 @@ Pick the right format (single image, carousel, essay, case study, commentary, fr
 
 ### Stage 5 — Visual Production
 
-Translate the brief into a visual spec: cover concept, cover headline, supporting copy, image direction, layout, type hierarchy, and exact color tokens. Follow the ELITE visual system (Midnight Sky + editorial composition from the reference image). Slide-by-slide content when it is a carousel.
+Translate the brief into a visual spec (cover concept, cover headline, supporting copy, image direction, layout, type hierarchy, exact color tokens), then render the finished carousel as PNG cards. Follow the ELITE visual system (Midnight Sky + the reference image's editorial composition). For a carousel, write `carousel.json` and run `scripts/render_carousel.py` to produce 3:4 cards at @2x — the copy-paste-ready image deliverable, not just a spec.
 
 ### Stage 6 — Optimization
 

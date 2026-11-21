@@ -10,7 +10,7 @@ Output is **Chinese content**. Instructions are English; every deliverable is Ch
 - **Researches** from primary sources and verifies dates, numbers, names, and quotes — never fabricating.
 - **Develops a real editorial angle** before writing, so every post carries a point of view the reader can argue with.
 - **Writes natural, intelligent Chinese** — no AI-style transitions, no empty motivation, no 标题党, no CTA.
-- **Designs editorial visuals** on the fixed Midnight Sky identity, following the split-page composition of `排版参考.jpeg`.
+- **Designs and renders editorial visuals** on the fixed Midnight Sky identity — split-page covers and slide cards (`scripts/render_carousel.py`), following the composition of `排版参考.jpeg`.
 - **Optimizes for Xiaohongshu search** without keyword stuffing.
 - **Quality-gates** every deliverable before it ships.
 - **Reviews performance** and feeds learnings back into topic selection.
@@ -38,6 +38,8 @@ workflows/                   # stage runbooks (Stages 1-8)
 templates/                   # fill-in output structures
   topic-brief.md  research-notes.md  editorial-brief.md
   carousel.md  single-post.md  visual-spec.md  publishing-copy.md
+scripts/
+  render_carousel.py         # renders carousel.json -> PNG cards (Midnight Sky style)
 examples/
   good-examples.md  bad-examples.md
 tests/
@@ -51,7 +53,7 @@ This is an **Agent Skill**: a folder containing a `SKILL.md` entry point with `n
 - **Claude Code** — place the folder in the skills directory and the `SKILL.md` is discovered via its frontmatter. For a per-user install, clone to `~/.claude/skills/elite-rednote-skill/`; for a project-scoped install, clone to `.claude/skills/elite-rednote-skill/` inside the working repo.
 - **Other agents** — any agent that loads `SKILL.md`-format skills (frontmatter `name` + `description`) can use this folder directly. Compatibility with a specific agent has only been verified where that agent documents `SKILL.md` discovery; do not claim compatibility beyond what that agent supports.
 
-No external dependencies, no build step, no runtime tooling.
+The content pipeline has no dependencies. Rendering PNG cards via `scripts/render_carousel.py` additionally requires **Google Chrome** (used headless) on the machine.
 
 ## Usage
 

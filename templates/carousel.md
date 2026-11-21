@@ -5,6 +5,7 @@ Slide-by-slide copy. Rules:
 - 6-9 cards; one idea per card; every card independently readable (no "接上一条").
 - The 判断 (the creator's own view) gets its own card where possible.
 - Emphasis is marked `**重点**` on a phrase, never a whole paragraph.
+- To render this as PNG cards, write it as `carousel.json` and run `scripts/render_carousel.py` (see `workflows/visual-production.md` §6). The `**重点**` marks become gold highlights.
 
 ```markdown
 ## 主标题
