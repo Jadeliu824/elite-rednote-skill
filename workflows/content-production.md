@@ -1,38 +1,79 @@
 # Stage 4 — Writing
 
-Write the post copy in natural, intelligent Chinese. Standards are in `references/editorial-guidelines.md` §5-6; this is the procedure.
+Write the post copy in natural, intelligent Chinese. Standards live in `references/editorial-guidelines.md`; this is the procedure. It is a real editing process — six steps, not "generate and lightly touch up."
 
-## 1. Choose the format
+## 0. Choose the format
 
-Pick from the format catalog (`editorial-guidelines.md` §6) based on what the argument needs:
+From the format catalog (`editorial-guidelines.md` §12): single image / carousel / essay / case study / commentary / framework / building-in-public. The format serves the argument, never the reverse.
 
-- One sharp claim → single image / essay.
-- An argument that unfolds in steps → carousel (6-9 cards, one idea per card).
-- One decision examined in depth → case study.
-- A reusable model → framework.
-- First-person build progress → building-in-public update.
+## Step 1 — Establish why it is worth writing
 
-The format serves the argument, never the reverse.
+Answer before drafting (from `editorial-guidelines.md` §5):
 
-## 2. Draft
+- The single most valuable thing the reader learns?
+- The new cognition beyond common content?
+- The one idea that must survive?
+- Why the reader would finish it?
 
-Write toward the `editorial-brief`'s central argument. Do not draft an introduction and then figure out the argument — draft *the argument*, then let the opening pull the reader into it.
+No clear answer → do not start. Return to Stage 3.
 
-## 3. Rewrite (the mandatory passes)
+## Step 2 — Find the best narrative entry
 
-Run every pass; none is optional.
+Propose **at least three** different openings (from `editorial-guidelines.md` §6.2: 反直觉判断 / 具体事件 / 利益冲突 / 认知反差 / 具体问题 / 故事切入 / 数据冲击). Evaluate each on:
 
-1. **去 AI 味.** Remove every banned phrase and pattern (`editorial-guidelines.md` §5.1). Replace with spoken, conversational phrasing.
-2. **短句.** Break long sentences. Target ≤ 40 characters; one idea per sentence; 句号 > 逗号.
-3. **具体化.** Every abstract claim gets a concrete anchor — a name, number, date, or example. Replace vague quantifiers with specifics or cut them.
-4. **结构去大纲化.** Remove "第一/第二/第三" scaffolding; make the argument flow question-to-question, separated by blank lines.
-5. **开头结尾.** Strong opening that enters the conflict directly; natural ending that does not repeat the opening or preach.
+- pull (does it make the reader want to continue?);
+- concreteness;
+- link to the central argument;
+- whether it naturally opens into the whole piece.
 
-## 4. Fill the output template
+Choose the most arresting, not the safest or most conventional.
 
-- Carousel → `templates/carousel.md`: slide-by-slide copy, each card independently readable, the punchline (判断) on its own card where possible.
-- Single post / essay → `templates/single-post.md`: title, opening, body, closing.
+## Step 3 — Build the argument route
 
-## 5. Self-check before Stage 5
+Before drafting, fix:
 
-Read it aloud mentally. If a sentence would not come out of a person's mouth in conversation, rewrite it. If the whole piece could have been produced by a competent summarizer of the same source, it is not ELITE content — return to Stage 3.
+- the **central argument** (from the `editorial-brief`);
+- the **single most critical piece of evidence**;
+- the **strongest counter-argument** (and how to address it);
+- the **logical progression** (e.g. 现象→矛盾→原因→证据→机制→判断, not A→B→C→总结);
+- the **conclusion worth remembering**.
+
+## Step 4 — First draft
+
+Write naturally — do not pour into a template first. Get the real viewpoint and reasoning down, then adjust structure. Short sentences, specific details, no banned phrasing (all in `editorial-guidelines.md` §11).
+
+## Step 5 — Three editing rounds
+
+### Round 1 — 思想编辑 (ideas)
+- Is the viewpoint clear enough? Is there a real insight?
+- Does the argument hold? Is a key counter-argument missing?
+- Is every material serving the central argument (cut what does not)?
+
+### Round 2 — 叙事编辑 (narrative)
+- Is the opening pulling? Is there reading tension?
+- Do paragraphs advance naturally? Any redundancy or repetition?
+- Is the ending worth remembering?
+
+### Round 3 — 语言编辑 (language)
+- Remove AI 腔 and empty expressions (`editorial-guidelines.md` §10, §11.1).
+- Replace abstract 套话 with concrete detail.
+- Adjust sentence rhythm — long/short alternation, varied paragraph length.
+- Make it natural, accurate, and identifiable.
+
+## Step 6 — Simulate the real reader
+
+Read from the target reader's position and ask:
+
+- Why would I read this?
+- Does the first screen pull me in?
+- Mid-way, is there a reason to keep going?
+- Did I gain new knowledge or a new judgment frame?
+- Any paragraph I want to skip?
+- What will I remember after finishing?
+- Would I save, share, or want to know more about ELITE?
+
+Correct-but-unreadable is a fail. If the piece passes correctness but not read-worthiness, it does not ship.
+
+## Output
+
+Fill `templates/carousel.md` (multi-slide) or `templates/single-post.md` (single image / essay), then hand to Stage 5 (visual) and Stage 6 (optimization). Every piece still passes Stage 7 (QA) before delivery — including the 100-point score in `workflows/quality-assurance.md`.

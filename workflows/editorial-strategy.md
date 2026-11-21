@@ -15,7 +15,7 @@ Answer all six, in this order:
 
 ## 2. Run the angle tests
 
-From `references/editorial-guidelines.md` §4:
+From `references/editorial-guidelines.md` §5.1:
 
 - **So what** — does it deserve attention now, from this reader?
 - **Tension** — is there something to argue with?
@@ -24,6 +24,10 @@ From `references/editorial-guidelines.md` §4:
 
 If any test fails, the topic is rejected here — it is not rescued in writing. Return to Stage 1 with a sharper candidate.
 
-## 3. Record
+## 3. Determine the Product Bridge
+
+Check `references/product-inventory.md` for a real, matching product. Answer (per `references/commercial-strategy.md` §4): content role, pillar, whether the knowledge base contains related content, what the reader wants next, what systematic value the paid tier offers, and the CTA. If no verified product matches, record "无直接产品关联" and do no product CTA.
+
+## 4. Record
 
 Fill `templates/editorial-brief.md`. The brief's central argument becomes the spine of the writing and the headline. If the writing stage cannot stay true to this brief, the brief is wrong and must be revised — not silently abandoned.

@@ -73,3 +73,45 @@ Run these to validate that the skill produces the right behavior. Each case stat
 **Check:** run the full 8-stage pipeline.
 
 **Pass:** all eight templates/records are filled; the QA checklist passes all nine checks; the output is brand-consistent, fact-checked, and judgment-driven. A defect found at any later stage routes back to the correct earlier stage, not to a hack at the end.
+
+## 10. Opening — rejects a cliché
+
+**Input:** a draft that opens with "在当今这个快速变化的时代……".
+
+**Pass:** the opening is rejected per `editorial-guidelines.md` §6.1; the piece is reopened at a concrete entry (event / 反差 / 数据冲击).
+
+## 11. Specificity — abstract claims fail
+
+**Input:** a draft of only abstract claims ("这背后反映了更深层次的逻辑") with no case or number.
+
+**Pass:** fails the §8 delete test and the ≥2 concrete-source-types rule; revised to include at least two of: case, data, primary source, decision, history, stakeholder interest, mechanism, scene.
+
+## 12. Contrast test — draft → edit → score
+
+Run for at least three topics (WORLD, CAPITAL, BUSINESS). For each: produce an unedited first draft; run the three editing rounds (`workflows/content-production.md` Step 5); show the before/after and what each round fixed; score the final via `workflows/quality-assurance.md` §2.
+
+**Pass:** each final ≥ 85, with concrete reasons per dimension; the draft's AI-flavor/template problems are visibly gone.
+
+## 13. Commercial — Traffic note does not sell
+
+**Input:** a WORLD traffic note (content role = Traffic).
+
+**Pass:** no product promotion, no Product Bridge, CTA limited to 关注/收藏/讨论 (or none); free value complete.
+
+## 14. Commercial — natural Product Bridge
+
+**Input:** a CAPITAL trust note whose topic has a verified 已存在 entry in `product-inventory.md`.
+
+**Pass:** the Product Bridge leads naturally from the reader's next learning need; no "完整版请购买"; references only content the inventory confirms.
+
+## 15. Commercial — no product connection
+
+**Input:** a note whose topic has no matching inventory entry.
+
+**Pass:** recorded as "无直接产品关联"; no product CTA; no forced link.
+
+## 16. Commercial — no fabricated product claims
+
+**Input:** a draft that advertises a knowledge-base feature not in `product-inventory.md`.
+
+**Pass:** the claim is rejected (QA §3 commercial check); the piece cannot pass until the claim is removed or the inventory updated and dated.

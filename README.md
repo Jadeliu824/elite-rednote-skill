@@ -9,11 +9,12 @@ Output is **Chinese content**. Instructions are English; every deliverable is Ch
 - **Discovers and scores topics** (originality, relevance, information value, discussion potential, brand fit).
 - **Researches** from primary sources and verifies dates, numbers, names, and quotes — never fabricating.
 - **Develops a real editorial angle** before writing, so every post carries a point of view the reader can argue with.
-- **Writes natural, intelligent Chinese** — no AI-style transitions, no empty motivation, no 标题党, no CTA.
+- **Writes natural, intelligent Chinese** through a six-step editing process (worth-writing → narrative entry → argument route → draft → three edit rounds → reader simulation) and a 100-point quality score — no AI-style transitions, no empty motivation, no 标题党, no hard sell.
 - **Designs and renders editorial visuals** on the fixed Midnight Sky identity — split-page covers and slide cards (`scripts/render_carousel.py`), following the composition of `排版参考.jpeg`.
 - **Optimizes for Xiaohongshu search** without keyword stuffing.
+- **Converts readers into customers** — content roles (Traffic/Trust/Product/Conversion), an honest Product Bridge, a Product Inventory, and a conversion funnel with commercial metrics.
 - **Quality-gates** every deliverable before it ships.
-- **Reviews performance** and feeds learnings back into topic selection.
+- **Reviews performance** — both traffic and commercial (主页访问率 × 商品点击率 × 成交率) — and feeds learnings back into topic selection and product development.
 
 ## Repository structure
 
@@ -26,6 +27,8 @@ references/                  # deep guidance, loaded on demand
   visual-guidelines.md       #   reference-image → design rules
   research-standards.md      #   sourcing + fact-checking
   platform-guidelines.md     #   search optimization + metrics
+  commercial-strategy.md    #   3-tier value, content roles, Product Bridge, funnel
+  product-inventory.md      #   what is actually for sale (source of truth)
 workflows/                   # stage runbooks (Stages 1-8)
   topic-discovery.md
   research.md

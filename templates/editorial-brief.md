@@ -21,6 +21,15 @@ Fill all six fields before any writing. The central argument is the spine of the
 ## 为什么现在 / 为什么 ELITE
 （为什么值得现在关注；为什么 ELITE 是那个该发的人）
 
+## Product Connection
+（对应 product-inventory.md 里哪个真实产品；无则写「无直接产品关联」）
+
+## Product Bridge
+（自然引出付费价值的 1-2 句；无真实关联则不写，禁止「完整版请购买」）
+
+## CTA Strategy
+（Traffic 通常无 / Trust 延伸阅读 / Product 了解知识库 / Conversion 明确购买）
+
 ## 角度测试
 - [ ] So what：值得现在、对这位读者关注？
 - [ ] 张力：有可争论之处？

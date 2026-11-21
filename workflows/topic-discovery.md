@@ -35,11 +35,15 @@ Weighted score = Σ(dimension × weight). Thresholds:
 
 If the topic is tied to a development, confirm the date. An old source is allowed only when the *judgment* is what is fresh — and then you say so in the brief ("源为 7 月，选它因判断张力优先"), not hide it.
 
-## 4. Decide and record
+## 4. Assign the content role
+
+Give the topic a primary commercial role (Traffic / Trust / Product / Conversion) per `references/commercial-strategy.md` §3. This sets the CTA posture and whether a Product Bridge is expected: Traffic content may skip promotion entirely; Product/Conversion content must only reference real, inventoried product content.
+
+## 5. Decide and record
 
 Choose the single best candidate. Reject the rest. Fill `templates/topic-brief.md` with:
 
-- The topic, one pillar, and the layer (常青/时效/日记).
+- The topic, one pillar, the layer (常青/时效/日记), and the **content role**.
 - The five scores and the weighted result.
 - The one-line rationale for *why this one*.
 - Any known weakness to watch in later stages.

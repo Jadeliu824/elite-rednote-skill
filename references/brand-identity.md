@@ -56,7 +56,7 @@ ELITE speaks as an insider with judgment, not as a curator or a cheerleader.
 - **信息差 (information gap).** The value is "you get signal you didn't have," not "you get motivation you didn't ask for."
 - **具体 > 模糊 > 抽象.** Name names, give numbers, cite times. A specific detail beats a polished abstraction every time.
 - **干冷克制.** Dry, restrained humor used occasionally; understatement over exclamation. "这有点难评" style, not "绝了/炸裂/冲".
-- **No CTA.** No 私信我 / 评论区聊聊 / 关注我. The content completes itself.
+- **No engagement-begging.** No 私信我 / 评论区聊聊 / 关注我. Editorial content completes itself; it is never a sales pitch. Product-related content uses the honest Product Bridge from `commercial-strategy.md` — a natural pointer to real paid content, never "完整版请购买", never a fake cliffhanger.
 - **No 标题党.** The title states the real claim.
 
 For the full writing rules and the banned-phrase list, see `editorial-guidelines.md`.

@@ -12,6 +12,9 @@ WORLD / BUSINESS / CAPITAL / BUILD（必要时扩展并说明）
 ## Layer
 常青层 / 时效层 / 日记层
 
+## Content Role
+Traffic / Trust / Product / Conversion（见 references/commercial-strategy.md §3）
+
 ## Scoring
 | 维度 | 得分(1-5) | 权重 | 加权 |
 |------|-----------|------|------|

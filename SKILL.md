@@ -1,6 +1,6 @@
 ---
 name: elite-rednote-skill
-description: ELITE Studio 小红书 editorial engine. Research-driven production of high-judgment Chinese Xiaohongshu content end to end — topic discovery and scoring, primary-source research and fact-checking, editorial angle development, human-sounding Chinese writing, Midnight Sky editorial visual design, Xiaohongshu search optimization, publishing prep, and post-publication performance review. Use when producing, planning, improving, or evaluating ELITE Studio Xiaohongshu (小红书/Rednote) content, or when the user asks for a topic, a post, a carousel, a cover, or an editorial review under the ELITE brand (four pillars WORLD / BUSINESS / CAPITAL / BUILD).
+description: ELITE Studio 小红书 editorial engine. Research-driven production of high-judgment Chinese Xiaohongshu content end to end — topic discovery and scoring (with commercial content role), primary-source research and fact-checking, editorial angle development, human-sounding Chinese writing (six-step editing process, 100-point scoring), Midnight Sky editorial visual design and rendered carousel images, Xiaohongshu search optimization, publishing prep, product conversion (Product Bridge / content roles / Product Inventory), and post-publication performance review. Use when producing, planning, improving, or evaluating ELITE Studio Xiaohongshu (小红书/Rednote) content, or when the user asks for a topic, a post, a carousel, a cover, an editorial review, or a commercialization/conversion task under the ELITE brand (four pillars WORLD / BUSINESS / CAPITAL / BUILD).
 ---
 
 # ELITE 小红书 Editorial Engine
@@ -22,7 +22,7 @@ Not for: generic non-ELITE Xiaohongshu content, other platforms, or pure image e
 
 1. **Never fabricate.** No invented sources, quotes, statistics, names, or case studies. If you cannot verify it, drop it or say so.
 2. **Judgment over aggregation.** Every post must contain a point of view the reader can argue with. Summaries are not content.
-3. **No CTA, no hard sell.** No 引导私信/评论/关注, no 硬广. Let the content do the work.
+3. **No hard sell, no engagement-begging.** No 引导私信/评论/关注. Editorial content completes itself. Product content may use an honest, natural Product Bridge (`references/commercial-strategy.md`) that references only what `references/product-inventory.md` confirms exists — never a cliffhanger, never a fake promise.
 4. **No 标题党.** Titles promise exactly what the post delivers.
 5. **Human-sounding Chinese.** Ban AI-style transitions and empty motivation (see `references/editorial-guidelines.md`).
 6. **Midnight Sky is fixed.** Primary background is `#16151D`. Never change it or substitute a generic dark.
@@ -34,14 +34,14 @@ Run the eight stages in order for a full production. For a partial request, star
 
 | # | Stage | What it produces | Load |
 |---|-------|------------------|------|
-| 1 | Topic Discovery | A scored, justified topic decision | `workflows/topic-discovery.md` → `templates/topic-brief.md` |
+| 1 | Topic Discovery | A scored, justified topic decision + its content role | `workflows/topic-discovery.md` + `references/commercial-strategy.md` → `templates/topic-brief.md` |
 | 2 | Research | Verified facts + tracked sources | `workflows/research.md` + `references/research-standards.md` → `templates/research-notes.md` |
-| 3 | Editorial Strategy | Target reader, core question, argument, angle | `workflows/editorial-strategy.md` → `templates/editorial-brief.md` |
+| 3 | Editorial Strategy | Target reader, core question, argument, angle, Product Bridge | `workflows/editorial-strategy.md` + `references/product-inventory.md` → `templates/editorial-brief.md` |
 | 4 | Writing | The post copy (Chinese) | `workflows/content-production.md` + `references/editorial-guidelines.md` → `templates/carousel.md` or `templates/single-post.md` |
 | 5 | Visual Production | Cover + slide design, then rendered PNG carousel cards | `workflows/visual-production.md` + `references/visual-guidelines.md` → `templates/visual-spec.md` + `scripts/render_carousel.py` |
 | 6 | Optimization | Title, keywords, hashtags, description | `workflows/optimization.md` + `references/platform-guidelines.md` → `templates/publishing-copy.md` |
 | 7 | Quality Assurance | Pass / revise / reject verdict | `workflows/quality-assurance.md` |
-| 8 | Performance Review | Learning loop back into Stage 1 | `workflows/performance-review.md` |
+| 8 | Performance Review | Traffic + commercial learning loop, demand discovery | `workflows/performance-review.md` + `references/commercial-strategy.md` |
 
 ### Stage 1 — Topic Discovery
 
@@ -88,5 +88,7 @@ The records form a traceable package: `topic-brief` → `research-notes` → `ed
 - Visual system (from the reference image): `references/visual-guidelines.md`
 - Sourcing and fact-checking: `references/research-standards.md`
 - Platform mechanics and metrics: `references/platform-guidelines.md`
+- Commercial strategy and Product Bridge: `references/commercial-strategy.md`
+- What is actually for sale (Product Inventory): `references/product-inventory.md`
 
 The reference image `排版参考.jpeg` is the visual source of truth. Do not delete, rename, or modify it.
