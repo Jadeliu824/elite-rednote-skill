@@ -42,11 +42,11 @@ COVER_IMG_H = 42   # % height of the image field on the cover
 
 # type scale (CSS in 1080x1440 coordinate space; Chrome scales x2)
 KICKER_FS = 20
-HEADLINE_FS = 66
+HEADLINE_FS = 82
 HOOK_FS = 27
 SUPPORT_FS = 21
-SLIDE_HEAD_FS = 44
-SLIDE_BODY_FS = 38
+SLIDE_HEAD_FS = 58
+SLIDE_BODY_FS = 50
 PAGENO_FS = 20
 
 
@@ -148,16 +148,17 @@ def slide_html(spec, slide, idx, total):
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>
 {BASE_CSS}
-.slide-head {{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:44px; }}
+body.slide {{ padding:{PAD_TOP}px {PAD_X}px; display:flex; flex-direction:column; }}
+.slide-head {{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:56px; flex-shrink:0; }}
 .pageno {{ font-size:{PAGENO_FS}px; color:{MUTED}; letter-spacing:2px; }}
-.slide-body {{ padding:0 0 {PAD_BOTTOM}px; }}
+.slide-body {{ flex:1; display:flex; flex-direction:column; justify-content:center; padding-bottom:{PAD_BOTTOM}px; }}
 .heading {{
-  font-size:{SLIDE_HEAD_FS}px; font-weight:700; line-height:1.3; margin-bottom:30px;
-  padding-left:20px; border-left:4px solid {GOLD}; color:{WARM};
+  font-size:{SLIDE_HEAD_FS}px; font-weight:700; line-height:1.3; margin-bottom:40px;
+  padding-left:22px; border-left:5px solid {GOLD}; color:{WARM};
 }}
-.slide-body p {{ font-size:{SLIDE_BODY_FS}px; line-height:1.72; margin-bottom:26px; color:{WARM}; }}
+.slide-body p {{ font-size:{SLIDE_BODY_FS}px; line-height:1.62; margin-bottom:34px; color:{WARM}; }}
 </style></head>
-<body class="slide" style="padding:{PAD_TOP}px {PAD_X}px;">
+<body class="slide">
 <div class="slide-head">
   <div class="kicker">{esc(spec.get("pillar", "ELITE"))}</div>
   <div class="pageno">{idx:02d} / {total:02d}</div>

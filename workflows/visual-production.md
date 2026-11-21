@@ -41,9 +41,10 @@ Fill `templates/visual-spec.md`: cover concept, cover headline, supporting copy,
 
 The spec is not the finish line — for a carousel, produce the actual images:
 
-1. Write the carousel copy as `carousel.json` (structure below). Mark phrases to highlight in gold with `**重点**`.
-2. Run `python3 scripts/render_carousel.py carousel.json`.
-3. Verify: cover + N slides, each `2160×2880` (3:4 @2x), saved to `~/ELITE/组图/<slug>/` and copied to the Desktop. Check that no slide's text is clipped.
+1. **Find the cover image.** Search freely-licensed sources (Wikimedia Commons, Unsplash) for a dark, moody image matching the topic — a data center for a compute story, a factory for a manufacturing story, etc. Download it and set `cover.image` to its path. Record the source and license; if the license requires attribution, put the credit in the publishing description (not on the card).
+2. Write the carousel copy as `carousel.json` (structure below). Mark phrases to highlight in gold with `**重点**`.
+3. Run `python3 scripts/render_carousel.py carousel.json`.
+4. Verify: cover + N slides, each `2160×2880` (3:4 @2x), saved to `~/ELITE/组图/<slug>/` and copied to the Desktop. Check that no slide's text is clipped.
 
 `carousel.json` structure:
 
@@ -52,11 +53,11 @@ The spec is not the finish line — for a carousel, produce the actual images:
   "slug": "anthropic-ipo-2026",
   "pillar": "CAPITAL",
   "title": "1.5万亿市值，背后是一张9000亿的账单",
-  "cover": { "headline": "...", "hook": "...", "supporting": "...", "image": "" },
+  "cover": { "headline": "...", "hook": "...", "supporting": "...", "image": "/path/to/cover.jpg" },
   "slides": [
     { "heading": "事件", "paragraphs": ["...", "**重点**"] }
   ]
 }
 ```
 
-`cover.image` is optional — a path to a screenshot/photo for the cover's image field; leave `""` for a generated abstract field. Rendering requires Google Chrome (headless) on the machine.
+`cover.image` is the downloaded cover image (or a user-supplied screenshot/photo); leave `""` only as a last-resort abstract field. Rendering requires Google Chrome (headless) on the machine.
