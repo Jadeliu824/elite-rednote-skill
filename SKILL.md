@@ -30,50 +30,60 @@ Not for: generic non-ELITE Xiaohongshu content, other platforms, or pure image e
 
 ## The pipeline
 
-Run the eight stages in order for a full production. For a partial request, start at the relevant stage but still run Stage 7 (QA) before delivering anything.
+The full closed loop: Notion 选题库 → 筛选 → 研究 → 标题 → 写作 → 封面 → 发布 → 回填 → 复盘 → 反哺下一期. For a partial request, start at the relevant stage but always run Stage 8 (QA + audit) before delivering.
 
 | # | Stage | What it produces | Load |
 |---|-------|------------------|------|
-| 1 | Topic Discovery | A scored, justified topic decision + its content role | `workflows/topic-discovery.md` + `references/commercial-strategy.md` → `templates/topic-brief.md` |
+| 1 | Topic Selection | Scored topic from the Notion plan (or a fresh opportunity) + content role | `workflows/topic-selection.md` + `references/notion-content-plan.md` + `references/commercial-strategy.md` → `templates/topic-brief.md` |
 | 2 | Research | Verified facts + tracked sources | `workflows/research.md` + `references/research-standards.md` → `templates/research-notes.md` |
 | 3 | Editorial Strategy | Target reader, core question, argument, angle, Product Bridge | `workflows/editorial-strategy.md` + `references/product-inventory.md` → `templates/editorial-brief.md` |
-| 4 | Writing | The post copy (Chinese) | `workflows/content-production.md` + `references/editorial-guidelines.md` → `templates/carousel.md` or `templates/single-post.md` |
-| 5 | Visual Production | Cover + slide design, then rendered PNG carousel cards | `workflows/visual-production.md` + `references/visual-guidelines.md` → `templates/visual-spec.md` + `scripts/render_carousel.py` |
-| 6 | Optimization | Title, keywords, hashtags, description | `workflows/optimization.md` + `references/platform-guidelines.md` → `templates/publishing-copy.md` |
-| 7 | Quality Assurance | Pass / revise / reject verdict | `workflows/quality-assurance.md` |
-| 8 | Performance Review | Traffic + commercial learning loop, demand discovery | `workflows/performance-review.md` + `references/commercial-strategy.md` |
+| 4 | Title | 5-direction title options + best pick | `workflows/title-system.md` → `templates/title-options.md` |
+| 5 | Writing | The post copy (Chinese) | `workflows/content-production.md` + `references/editorial-guidelines.md` → `templates/carousel.md` / `templates/single-post.md` |
+| 6 | Cover + Visual | 3-direction cover concept + rendered PNG cards | `workflows/cover-concepts.md` + `workflows/visual-production.md` + `references/visual-guidelines.md` → `templates/cover-concepts.md` + `templates/visual-spec.md` + `scripts/render_carousel.py` |
+| 7 | Optimization | Keywords, hashtags, description | `workflows/optimization.md` + `references/platform-guidelines.md` → `templates/publishing-copy.md` |
+| 8 | QA + Pre-Publish Audit | 100-point score + pre-publish verdict | `workflows/quality-assurance.md` + `workflows/pre-publish-audit.md` |
+| 9 | Publish + Backfill | Publish package; update the original Notion record | `workflows/publish-and-backfill.md` → `templates/publish-package.md` + `templates/review-record.md` |
+| 10 | Performance + Learning | Traffic/commercial learning loop + learning log | `workflows/performance-review.md` + `references/editorial-learning-log.md` |
 
-### Stage 1 — Topic Discovery
+### Stage 1 — Topic Selection
 
-Find candidates (emerging developments, strong sources, reader questions), then score each on **originality, relevance, information value, discussion potential, brand fit** (rubric in `workflows/topic-discovery.md`). Reject repetitive or low-value topics. Output a `topic-brief` with the decision and its rationale.
+Read today's candidate tasks from the Notion content plan (`references/notion-content-plan.md`), exclude cancelled/published, prioritize overdue → today → P0/P1, score each on the eight dimensions, and commit to one. Record the source Notion page_id for backfill. If the database is not yet authorized, ask the user to connect it — do not invent topics.
 
 ### Stage 2 — Research
 
-Primary sources first, reliable secondary sources for context. Verify every date, number, name, and claim. Separate fact / interpretation / opinion. Record sources so they are traceable. Stop researching when the argument is supported — do not collect for its own sake.
+Primary sources first, reliable secondary sources for context. Verify every date, number, name, and claim. Separate fact / interpretation / opinion. Record sources so they are traceable.
 
 ### Stage 3 — Editorial Strategy
 
-Before writing, define: **target reader, core question, central argument, editorial angle, reader takeaway, and why ELITE should publish this.** A topic without a clear angle is rejected here, not rescued in writing.
+Define target reader, core question, central argument, editorial angle, reader takeaway, why ELITE — and the Product Bridge (real, from `product-inventory.md`).
 
-### Stage 4 — Writing
+### Stage 4 — Title
 
-Pick the right format (single image, carousel, essay, case study, commentary, framework, building-in-public update), then write natural, intelligent Chinese: strong opening, clear progression, specific examples, real reasoning. No AI-style transitions, no empty motivation, no bullet fragmentation, no forced conclusion.
+Produce 5 title directions (冲突/反常识/悬念/数字/读者利益), each with click motive + risks, then pick the best. No abstract news titles, no clickbait, no promising what the post doesn't deliver.
 
-### Stage 5 — Visual Production
+### Stage 5 — Writing
 
-Translate the brief into a visual spec (cover concept, cover headline, supporting copy, image direction, layout, type hierarchy, exact color tokens), then render the finished carousel as PNG cards. Follow the ELITE visual system (Midnight Sky + the reference image's editorial composition). For a carousel, write `carousel.json` and run `scripts/render_carousel.py` to produce 3:4 cards at @2x — the copy-paste-ready image deliverable, not just a spec.
+Pick the format, then write natural, intelligent Chinese through the six-step editing process. No AI-style transitions, no empty motivation, no bullet fragmentation, no forced conclusion.
 
-### Stage 6 — Optimization
+### Stage 6 — Cover + Visual
 
-Optimize the title for readability **and** search intent, identify search keywords, prepare hashtags, write the description. No keyword stuffing; editorial quality is never sacrificed to the algorithm.
+Design 3 cover directions (editorial photography / conceptual / data-financial) — never a generic server-room stock photo — then render the finished carousel as PNG cards.
 
-### Stage 7 — Quality Assurance
+### Stage 7 — Optimization
 
-Evaluate the deliverable against the QA checklist (factual accuracy, source quality, argument, originality, reader value, narrative, brand consistency, visual consistency, platform suitability). Weak output is revised, not shipped. See `workflows/quality-assurance.md`.
+Search keywords, hashtags, description — natural, no stuffing. Editorial quality is never sacrificed to the algorithm.
 
-### Stage 8 — Performance Review
+### Stage 8 — QA + Pre-Publish Audit
 
-After publishing, collect reach (impressions, views, CTR), engagement (likes, saves, comments, shares), and business outcomes (profile visits, leads) — and treat them as three different things. Convert findings into concrete changes for the next Stage 1, rather than chasing traffic blindly.
+100-point score + the nine editorial checks + commercial checks + the pre-publish audit (title/cover/content/commercialization). Weak output is revised, not shipped.
+
+### Stage 9 — Publish + Backfill
+
+Output the full publish package. Default: the user confirms and publishes (never auto-publish without authorization). After the user provides the link + data, update the original Notion record: status → 已发布, link, structured 复盘 (未采集 where missing).
+
+### Stage 10 — Performance + Learning
+
+Read the numbers as reach/engagement/business-outcome, write the structured review back, and record reusable learnings in the learning log (facts vs hypotheses). Feed them into the next Stage 1.
 
 ## Working files & output location
 
@@ -90,5 +100,7 @@ The records form a traceable package: `topic-brief` → `research-notes` → `ed
 - Platform mechanics and metrics: `references/platform-guidelines.md`
 - Commercial strategy and Product Bridge: `references/commercial-strategy.md`
 - What is actually for sale (Product Inventory): `references/product-inventory.md`
+- Notion 选题库 config + field mapping: `references/notion-content-plan.md`
+- Reusable learnings (facts vs hypotheses): `references/editorial-learning-log.md`
 
 The reference image `排版参考.jpeg` is the visual source of truth. Do not delete, rename, or modify it.

@@ -29,18 +29,26 @@ references/                  # deep guidance, loaded on demand
   platform-guidelines.md     #   search optimization + metrics
   commercial-strategy.md    #   3-tier value, content roles, Product Bridge, funnel
   product-inventory.md      #   what is actually for sale (source of truth)
-workflows/                   # stage runbooks (Stages 1-8)
-  topic-discovery.md
+  notion-content-plan.md    #   Notion 选题库 config + field mapping
+  editorial-learning-log.md #   reusable learnings (facts vs hypotheses)
+workflows/                   # stage runbooks (Stages 1-10)
+  topic-selection.md         #   Notion-driven topic selection
+  topic-discovery.md         #   fresh-opportunity fallback
   research.md
   editorial-strategy.md
+  title-system.md            #   5-direction titles
   content-production.md
+  cover-concepts.md          #   3-direction covers
   visual-production.md
   optimization.md
   quality-assurance.md
+  pre-publish-audit.md       #   pre-publish checks
+  publish-and-backfill.md    #   publish package + Notion backfill
   performance-review.md
 templates/                   # fill-in output structures
   topic-brief.md  research-notes.md  editorial-brief.md
   carousel.md  single-post.md  visual-spec.md  publishing-copy.md
+  title-options.md  cover-concepts.md  publish-package.md  review-record.md
 scripts/
   render_carousel.py         # renders carousel.json -> PNG cards (Midnight Sky style)
 examples/

@@ -115,3 +115,33 @@ Run for at least three topics (WORLD, CAPITAL, BUSINESS). For each: produce an u
 **Input:** a draft that advertises a knowledge-base feature not in `product-inventory.md`.
 
 **Pass:** the claim is rejected (QA §3 commercial check); the piece cannot pass until the claim is removed or the inventory updated and dated.
+
+## 17. Notion 选题读取（Test 1）
+
+**Input:** query the content-plan Data Source (`references/notion-content-plan.md`).
+
+**Pass:** reads 栏目/日期/优先级/状态; excludes 取消 and 已发布; does not invent topics not in the DB; records each record's page_id for backfill. If the DB is 404 (not shared), it stops and asks the user to connect it — never fabricates tasks.
+
+## 18. 标题优化（Test 2）
+
+**Input:** the Anthropic IPO case ("1.5万亿市值，背后是一张9000亿的账单").
+
+**Pass:** identifies it as abstract/news-like (no conflict, no reader why); produces 5 directions (冲突/反常识/悬念/数字/读者利益) each with click motive + risks; final title promises only what the post delivers; no number inflation.
+
+## 19. 封面优化（Test 3）
+
+**Input:** the same topic.
+
+**Pass:** rejects the generic server-room stock photo; produces ≥3 visual directions (editorial photography / conceptual / data-financial) each with subject, composition, light/color, mood, title placement; follows Midnight Sky brand rules; has a real visual subject.
+
+## 20. 发布后回填（Test 4）
+
+**Input:** user provides link + partial data.
+
+**Pass:** updates the original page_id (not a new record); status → 已发布; link written; structured 复盘 written; missing data marked 未采集 (not invented); time window labeled.
+
+## 21. 经验反哺（Test 5）
+
+**Input:** a prior 复盘 exists (e.g. "封面机房图 → 低点击").
+
+**Pass:** the next production reads the learning log and proposes a different cover direction + title test; distinguishes fact (low exposure) from hypothesis (cover caused it).
