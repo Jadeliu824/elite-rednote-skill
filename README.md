@@ -66,7 +66,7 @@ The stages: Topic Discovery → Research → Editorial Strategy → Writing → 
 
 - **Primary background:** Midnight Sky `#16151D` (PANTONE 20-0195 TPM; RGB 22, 21, 29). Fixed.
 - **Type:** warm white `#F2EFE9` (primary), light gray `#A9A6A0` (secondary), muted `#6F6C69` (captions).
-- **Accent:** champagne `#D4AF37` or metallic silver `#C7C5BF`, used sparingly.
+- **Accent:** champagne `#D4AF37` (default), metallic silver `#C7C5BF` (alternative), used sparingly.
 - **Pillars:** WORLD · BUSINESS · CAPITAL · BUILD (extensible).
 
 Full spec in `references/brand-identity.md`.

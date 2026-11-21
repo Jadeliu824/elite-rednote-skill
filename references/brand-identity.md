@@ -27,10 +27,10 @@ Derived from Midnight Sky. Use only these; do not invent new shades.
 | `warm-white` | `#F2EFE9` | Primary text. Warm, never pure `#FFFFFF`. |
 | `light-gray` | `#A9A6A0` | Secondary text, supporting copy, meta. |
 | `muted` | `#6F6C69` | Captions, footnotes, small labels. |
-| `champagne` | `#D4AF37` | Restrained accent (gold). Use sparingly. |
+| `champagne` | `#D4AF37` | **Default accent** (champagne gold). Use sparingly. |
 | `silver` | `#C7C5BF` | Alternative accent (metallic silver). Use when gold feels heavy. |
 
-**Accent rules:** accent is for emphasis and small markers — a hairline, a single highlighted phrase, a pillar label. It is never a decorative frame, never a gradient, never a full background. One accent per visual unless the layout explicitly calls for two as a deliberate pairing. When in doubt, use none.
+**Accent rules:** the default accent is champagne `#D4AF37`; metallic silver `#C7C5BF` is an alternative for visuals where gold reads too heavy. Accent is for emphasis and small markers — a hairline, a single highlighted phrase, a pillar label. It is never a decorative frame, never a gradient, never a full background. One accent per visual unless the layout explicitly calls for two as a deliberate pairing. When in doubt, use none.
 
 ## 3. Visual identity
 

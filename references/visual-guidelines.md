@@ -30,7 +30,7 @@ The reference is light-on-dark reversed into dark-on-light. The adaptation:
 | Cream paper field | Midnight Sky `#16151D` background |
 | Near-black ink text | Warm white `#F2EFE9` primary text |
 | Muted print gray | Light gray `#A9A6A0` / muted `#6F6C69` |
-| (none — new) | Champagne `#D4AF37` or silver `#C7C5BF` as restrained accent |
+| (none — new) | Champagne `#D4AF37` (default) or silver `#C7C5BF` (alternative) as restrained accent |
 | Print texture | Optional very subtle grain on the type field; never a cream/light background |
 
 The print character survives through composition and typography, not through a literal paper color.
