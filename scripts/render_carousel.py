@@ -1,53 +1,53 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ELITE 小红书 editorial carousel renderer (Midnight Sky style).
+ELITE 小红书 carousel renderer — legacy editorial layout（迁移自 jade-claude-skills/elite-carousel）.
 
-输入: carousel.json  (pillar / title / cover / slides)
-输出: PNG 卡片 3:4 = 1080x1440，@2x = 2160x2880
-      ~/ELITE/组图/<slug>/  + 桌面副本 ~/Desktop/ELITE组图_<slug>/
+输入: carousel.json
+  { slug, title, author, source, screenshot, summary, sections:[{heading, paragraphs:[...]}] }
+输出: 封面 + 正文卡片 PNG (3:4 = 1080x1440 @2x = 2160x2880)
+      ~/ELITE/组图/<slug>/ + 桌面副本 ~/Desktop/ELITE组图_<slug>/
 
-风格: split-page 杂志封面（图上区 + Midnight Sky 文字下区）+ 金色 kicker + 重点金色标注。
-颜色/排版规范见 references/visual-guidelines.md 与 references/brand-identity.md。
-
-用法: python3 render_carousel.py <carousel.json> [--out DIR]
+设计规范（恢复旧版排版，保留 Midnight Sky #16151D）:
+- logo 顶部居中、放大（84px 高），每张图都有
+- 封面: logo → 截图(不裁剪) → 大标题 → 作者 → 底部一段话总结，space-between 占满
+- 正文: logo → 小节主题(金色左竖条) → 段落，重点=金色半透明高亮；自动分页填满
+用法: python3 render_carousel.py <carousel.json>
 依赖: Google Chrome (headless)
 """
-import json, os, sys, re, html, subprocess, shutil, tempfile
+import json, os, sys, re, html, subprocess, shutil, tempfile, math
 from pathlib import Path
 
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 CANVAS_W, CANVAS_H = 1080, 1440          # 3:4
 SCALE = 2
 
-# Midnight Sky tokens (single source of truth: references/brand-identity.md)
-BG      = "#16151D"
-SURFACE = "#201F28"
-HAIRLINE = "#2E2D38"
-WARM    = "#F2EFE9"
-GRAY    = "#A9A6A0"
-MUTED   = "#6F6C69"
-GOLD    = "#D4AF37"
-SILVER  = "#C7C5BF"
+# 迁移后的配色：Midnight Sky 底 + 遗产排版（金 #D4AF37 与品牌 accent 一致）
+BG = "#16151D"
+TEXT = "#F0F0F0"
+MUTED = "#989898"
+GOLD = "#D4AF37"
+HL = "rgba(212,175,55,0.30)"
 
-# print-like grain (feTurbulence), very subtle on the dark field
-GRAIN = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E"
-         "%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E"
-         "%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E")
+PAD_X = 72
+PAD_TOP = 52
+LOGO_H = 84
+LOGO_MB = 40
+PAD_BOTTOM = 52
+BODY_FS = 46
+BODY_LH = 1.75
+HEAD_FS = 54
+HEAD_LH = 1.28
+PARA_MB = 36
+HEAD_MB = 40
+TITLE_FS = 66
+AUTHOR_FS = 26
+SUMMARY_FS = 30
 
-PAD_X = 68
-PAD_TOP = 56
-PAD_BOTTOM = 60
-COVER_IMG_H = 42   # % height of the image field on the cover
+CONTENT_W = CANVAS_W - 2 * PAD_X
+USABLE_H = CANVAS_H - PAD_TOP - LOGO_H - LOGO_MB - PAD_BOTTOM
 
-# type scale (CSS in 1080x1440 coordinate space; Chrome scales x2)
-KICKER_FS = 20
-HEADLINE_FS = 82
-HOOK_FS = 27
-SUPPORT_FS = 21
-SLIDE_HEAD_FS = 58
-SLIDE_BODY_FS = 50
-PAGENO_FS = 20
+DEFAULT_LOGO = Path.home() / "ELITE" / "logo.png"
 
 
 def esc(t):
@@ -55,7 +55,7 @@ def esc(t):
 
 
 def md(t):
-    """**重点** -> gold highlight"""
+    """**重点** → 金色半透明底高亮"""
     parts = re.split(r"(\*\*.*?\*\*)", t)
     out = []
     for p in parts:
@@ -70,101 +70,136 @@ def uri(p):
     return Path(p).as_uri()
 
 
+def logo_html():
+    if DEFAULT_LOGO.exists():
+        return f'<div class="logo"><img src="{uri(DEFAULT_LOGO)}"></div>'
+    return '<div class="logo logo-text">ELITE</div>'
+
+
+def est_lines(text, fs):
+    if not text:
+        return 0
+    per_line = max(1, int(CONTENT_W / fs))
+    return max(1, math.ceil(len(text) / per_line))
+
+
+def block_height(b):
+    if b["type"] == "heading":
+        return est_lines(b["text"], HEAD_FS) * HEAD_FS * HEAD_LH + HEAD_MB
+    return est_lines(b["text"], BODY_FS) * BODY_FS * BODY_LH + PARA_MB
+
+
+def paginate(blocks):
+    """贪心装页：标题连续流动，只在放不下时换页（标题后至少能跟一段）"""
+    cards, cur, cur_h = [], [], 0
+    i = 0
+    while i < len(blocks):
+        b = blocks[i]
+        bh = block_height(b)
+        if b["type"] == "heading":
+            next_h = block_height(blocks[i + 1]) if i + 1 < len(blocks) else 0
+            if cur and cur_h + bh + next_h > USABLE_H:
+                cards.append(cur)
+                cur, cur_h = [], 0
+            cur.append(b)
+            cur_h += bh
+        else:
+            if cur and cur_h + bh > USABLE_H:
+                cards.append(cur)
+                cur, cur_h = [], 0
+            cur.append(b)
+            cur_h += bh
+        i += 1
+    if cur:
+        cards.append(cur)
+    return cards
+
+
 BASE_CSS = f"""
 * {{ margin:0; padding:0; box-sizing:border-box; }}
 html, body {{ width:{CANVAS_W}px; height:{CANVAS_H}px; }}
 body {{
   background:{BG};
   font-family:-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  color:{WARM};
+  color:{TEXT};
+  padding:{PAD_TOP}px {PAD_X}px {PAD_BOTTOM}px;
+  display:flex; flex-direction:column;
   overflow:hidden;
   position:relative;
 }}
-.grain {{
-  position:absolute; inset:0; pointer-events:none; opacity:0.045;
-  background-image:url("{GRAIN}");
-  background-size:160px 160px;
+.logo {{ display:flex; justify-content:center; margin-bottom:{LOGO_MB}px; }}
+.logo img {{ height:{LOGO_H}px; }}
+.logo-text {{ height:{LOGO_H}px; align-items:center; font-size:34px; letter-spacing:12px;
+  color:{TEXT}; font-weight:600; }}
+.hl {{
+  background:{HL};
+  color:#FFFFFF;
+  padding:2px 6px;
+  border-radius:5px;
+  font-weight:600;
 }}
-.kicker {{
-  font-family:"Didot","Bodoni 72","Times New Roman",serif;
-  font-size:{KICKER_FS}px; letter-spacing:7px; text-transform:uppercase;
-  color:{GOLD}; font-weight:500;
-}}
-.hl {{ color:{GOLD}; font-weight:600; }}
 """
 
 
 def cover_html(spec):
-    cover = spec.get("cover", {})
-    img = cover.get("image", "")
-    if img and Path(img).exists():
-        field = f'<img class="cover-img" src="{uri(img)}">'
+    shot = spec.get("screenshot", "")
+    if shot and Path(shot).exists():
+        shot_html = f'<div class="shot"><img src="{uri(shot)}"></div>'
     else:
-        wm = esc(spec.get("pillar", "ELITE"))
-        field = f'<div class="watermark">{wm}</div>'
-    head = md(cover.get("headline") or spec.get("title", ""))
-    hook = md(cover.get("hook", ""))
-    supp = esc(cover.get("supporting", ""))
-    hook_html = f'<div class="hook">{hook}</div>' if hook else ""
-    supp_html = f'<div class="supporting">{supp}</div>' if supp else ""
+        # 封面必须有真图：用户附的 / 人物图 / 实拍图。缺图时不放文字占位，只保留标题/作者/总结。
+        shot_html = ""
+    summary = spec.get("summary", "").strip()
+    summary_html = f'<div class="summary">{md(summary)}</div>' if summary else ""
+    author = esc(spec.get("author", ""))
+    source = esc(spec.get("source", ""))
+    byline = ""
+    if author and source:
+        byline = f'<div class="author"><b>{author}</b> · {source}</div>'
+    elif author:
+        byline = f'<div class="author"><b>{author}</b></div>'
+    elif source:
+        byline = f'<div class="author">{source}</div>'
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>
 {BASE_CSS}
-.image-field {{ height:{COVER_IMG_H}%; position:relative; overflow:hidden; background:{SURFACE}; }}
-.cover-img {{ width:100%; height:100%; object-fit:cover; display:block; }}
-.image-field::after {{
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(22,21,29,0.10) 0%, rgba(22,21,29,0.45) 100%);
-}}
-.watermark {{
-  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
-  font-family:"Didot","Bodoni 72","Times New Roman",serif;
-  font-size:150px; letter-spacing:14px; color:{WARM}; opacity:0.08; font-weight:600;
-}}
-.cover-type {{
-  height:{100 - COVER_IMG_H}%; padding:{PAD_TOP}px {PAD_X}px {PAD_BOTTOM}px;
-  display:flex; flex-direction:column; justify-content:space-between;
-}}
-.headline {{ font-size:{HEADLINE_FS}px; font-weight:700; line-height:1.16; letter-spacing:-0.5px; }}
-.cover-foot {{ border-top:1px solid {HAIRLINE}; padding-top:26px; }}
-.hook {{ font-size:{HOOK_FS}px; line-height:1.6; color:{GRAY}; margin-bottom:16px; }}
-.supporting {{ font-size:{SUPPORT_FS}px; color:{MUTED}; letter-spacing:1px; }}
+body.cover {{ justify-content:space-between; }}
+body.cover .logo {{ margin-bottom:0; }}
+.shot {{ width:100%; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,0.10); }}
+.shot img {{ width:100%; height:auto; display:block; }}
+.title {{ font-size:{TITLE_FS}px; font-weight:800; line-height:1.2; letter-spacing:-0.5px; }}
+.author {{ font-size:{AUTHOR_FS}px; color:{MUTED}; }}
+.author b {{ color:{TEXT}; font-weight:600; }}
+.summary {{ padding-top:24px; border-top:1px solid rgba(255,255,255,0.12); font-size:{SUMMARY_FS}px; line-height:1.7; color:#C9C9C9; }}
 </style></head>
 <body class="cover">
-<div class="image-field">{field}</div>
-<div class="cover-type">
-  <div class="kicker">{esc(spec.get("pillar", "ELITE"))}</div>
-  <div class="headline">{head}</div>
-  <div class="cover-foot">{hook_html}{supp_html}</div>
-</div>
-<div class="grain"></div>
+{logo_html()}
+{shot_html}
+<div class="title">{md(spec.get("title", ""))}</div>
+{byline}
+{summary_html}
 </body></html>"""
 
 
-def slide_html(spec, slide, idx, total):
-    head = md(slide.get("heading", ""))
-    head_html = f'<div class="heading">{head}</div>' if head else ""
-    paras = "\n".join(f"<p>{md(p)}</p>" for p in slide.get("paragraphs", []))
+def body_html(blocks, idx, total):
+    parts = []
+    for b in blocks:
+        if b["type"] == "heading":
+            parts.append(f'<div class="heading">{md(b["text"])}</div>')
+        else:
+            parts.append(f'<p>{md(b["text"])}</p>')
+    body = "\n".join(parts)
+    pageno = f'<span class="pageno">{idx}/{total}</span>'
     return f"""<!DOCTYPE html>
 <html><head><meta charset="utf-8"><style>
 {BASE_CSS}
-body.slide {{ padding:{PAD_TOP}px {PAD_X}px; display:flex; flex-direction:column; }}
-.slide-head {{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:56px; flex-shrink:0; }}
-.pageno {{ font-size:{PAGENO_FS}px; color:{MUTED}; letter-spacing:2px; }}
-.slide-body {{ flex:1; display:flex; flex-direction:column; justify-content:center; padding-bottom:{PAD_BOTTOM}px; }}
-.heading {{
-  font-size:{SLIDE_HEAD_FS}px; font-weight:700; line-height:1.3; margin-bottom:40px;
-  padding-left:22px; border-left:5px solid {GOLD}; color:{WARM};
-}}
-.slide-body p {{ font-size:{SLIDE_BODY_FS}px; line-height:1.62; margin-bottom:34px; color:{WARM}; }}
+.heading {{ font-size:{HEAD_FS}px; font-weight:700; line-height:{HEAD_LH}; margin-bottom:{HEAD_MB}px; padding-left:22px; border-left:6px solid {GOLD}; }}
+.body-text p {{ font-size:{BODY_FS}px; line-height:{BODY_LH}; margin-bottom:{PARA_MB}px; color:{TEXT}; }}
+.pageno {{ position:absolute; top:{PAD_TOP+6}px; right:{PAD_X}px; font-size:22px; color:{MUTED}; }}
 </style></head>
-<body class="slide">
-<div class="slide-head">
-  <div class="kicker">{esc(spec.get("pillar", "ELITE"))}</div>
-  <div class="pageno">{idx:02d} / {total:02d}</div>
-</div>
-<div class="slide-body">{head_html}{paras}</div>
-<div class="grain"></div>
+<body>
+{logo_html()}
+<div class="body-text">{body}</div>
+{pageno}
 </body></html>"""
 
 
@@ -184,34 +219,36 @@ def render(html_str, out_png):
         os.remove(path)
 
 
-def main():
-    args = [a for a in sys.argv[1:]]
-    if not args or args[0] in ("-h", "--help"):
-        print("用法: python3 render_carousel.py <carousel.json> [--out DIR]")
-        sys.exit(1)
-    spec = json.load(open(args[0], encoding="utf-8"))
-    slug = spec.get("slug") or re.sub(r"[^\w一-鿿]+", "-", spec.get("title", "content")).strip("-")[:40]
+def build_blocks(spec):
+    blocks = []
+    for s in spec.get("sections", []):
+        blocks.append({"type": "heading", "text": s.get("heading", "")})
+        for p in s.get("paragraphs", []):
+            blocks.append({"type": "para", "text": p})
+    return blocks
 
-    outdir = None
-    if "--out" in args:
-        outdir = Path(args[args.index("--out") + 1])
-    else:
-        outdir = Path.home() / "ELITE" / "组图" / slug
+
+def main():
+    if len(sys.argv) < 2:
+        print("用法: python3 render_carousel.py <carousel.json>")
+        sys.exit(1)
+    spec = json.load(open(sys.argv[1], encoding="utf-8"))
+    slug = spec.get("slug") or re.sub(r"[^\w一-鿿]+", "-", spec.get("title", "content")).strip("-")[:40]
+    outdir = Path.home() / "ELITE" / "组图" / slug
     if outdir.exists():
         for old in outdir.glob("*.png"):
             old.unlink()
     outdir.mkdir(parents=True, exist_ok=True)
 
-    slides = spec.get("slides", [])
-    total = len(slides) + 1
-
     render(cover_html(spec), outdir / "01_cover.png")
     print("✓ 01_cover.png (封面)")
 
-    for i, s in enumerate(slides):
+    cards = paginate(build_blocks(spec))
+    for i, blocks in enumerate(cards):
         n = i + 2
-        render(slide_html(spec, s, n, total), outdir / f"{n:02d}.png")
-        print(f"✓ {n:02d}.png  <- {s.get('heading','') or '(正文)'}")
+        render(body_html(blocks, n, len(cards) + 1), outdir / f"{n:02d}.png")
+        heads = " / ".join(b["text"][:12] for b in blocks if b["type"] == "heading")
+        print(f"✓ {n:02d}.png  <- {heads or '(续)'}")
 
     desktop = Path.home() / "Desktop" / f"ELITE组图_{slug}"
     if desktop.exists():
@@ -219,7 +256,7 @@ def main():
     shutil.copytree(outdir, desktop)
     print(f"\n完成: {outdir}")
     print(f"桌面: {desktop}")
-    print(f"共 {total} 张")
+    print(f"共 {len(cards) + 1} 张")
 
 
 if __name__ == "__main__":

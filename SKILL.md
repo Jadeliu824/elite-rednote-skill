@@ -39,7 +39,7 @@ The full closed loop: Notion 选题库 → 筛选 → 研究 → 标题 → 写�
 | 3 | Editorial Strategy | Target reader, core question, argument, angle, Product Bridge | `workflows/editorial-strategy.md` + `references/product-inventory.md` → `templates/editorial-brief.md` |
 | 4 | Title | 5-direction title options + best pick | `workflows/title-system.md` → `templates/title-options.md` |
 | 5 | Writing | The post copy (Chinese) | `workflows/content-production.md` + `references/editorial-guidelines.md` → `templates/carousel.md` / `templates/single-post.md` |
-| 6 | Cover + Visual | 3-direction cover concept + rendered PNG cards | `workflows/cover-concepts.md` + `workflows/visual-production.md` + `references/visual-guidelines.md` → `templates/cover-concepts.md` + `templates/visual-spec.md` + `scripts/render_carousel.py` |
+| 6 | Cover + Visual | Legacy cover (logo + 真图 + title + summary) + auto-paginated PNG cards | `workflows/cover-concepts.md` + `workflows/visual-production.md` + `references/visual-guidelines.md` → `templates/carousel.md` + `scripts/render_carousel.py` |
 | 7 | Optimization | Keywords, hashtags, description | `workflows/optimization.md` + `references/platform-guidelines.md` → `templates/publishing-copy.md` |
 | 8 | QA + Pre-Publish Audit | 100-point score + pre-publish verdict | `workflows/quality-assurance.md` + `workflows/pre-publish-audit.md` |
 | 9 | Publish + Backfill | Publish package; update the original Notion record | `workflows/publish-and-backfill.md` → `templates/publish-package.md` + `templates/review-record.md` |
@@ -67,7 +67,7 @@ Pick the format, then write natural, intelligent Chinese through the six-step ed
 
 ### Stage 6 — Cover + Visual
 
-Design 3 cover directions (editorial photography / conceptual / data-financial) — never a generic server-room stock photo — then render the finished carousel as PNG cards.
+Restore the legacy carousel design (migrated from the old skill): cover = logo top + source 真图 (uncropped) + big title + author + one-paragraph summary; body = auto-paginated sections with gold-left-bar headings and gold background highlight. Render via `scripts/render_carousel.py`.
 
 ### Stage 7 — Optimization
 

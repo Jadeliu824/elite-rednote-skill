@@ -1,102 +1,55 @@
-# ELITE Visual Guidelines
+# ELITE Visual Guidelines（迁移版 — 遗产排版）
 
-Load this before Stage 5 (visual production). It translates the reference image `排版参考.jpeg` into actionable design rules, adapted to the ELITE Midnight Sky identity.
+视觉系统已迁移回旧库（jade-claude-skills/elite-carousel）的轮播排版，仅保留 ELITE 品牌色。所有卡片渲染遵循本文件 + `scripts/render_carousel.py`。
 
-Color tokens live in `brand-identity.md`; this file defines how to *use* them.
+## 1. 品牌色
 
-## 1. What the reference image teaches
+- 背景：**Midnight Sky `#16151D`**（品牌色，取代旧版 #191919，视觉兼容）。
+- 正文：`#F0F0F0` · 次级灰：`#989898` · 金色：`#D4AF37`（品牌 accent）。
+- 重点高亮：金色半透明底 `rgba(212,175,55,0.30)` 打在重点文字上（不是金色文字）。
 
-The reference (`排版参考.jpeg`) is a magazine-style editorial composition. Its structure, read top to bottom:
+## 2. 画布
 
-1. **Image-led upper section** (~top 40%): a full-bleed photograph in muted/dark tones. The image carries mood and subject, not information.
-2. **Typographic lower section** (~bottom 60%): a warm paper field with large, dominant typography, a small amount of supporting text, and near-black ink. High contrast, generous whitespace, minimal information.
+- **3:4** — `1080 × 1440`，@2x 输出 `2160 × 2880`。
+- 字体：PingFang SC（系统）。标题可加粗。
 
-The lessons to carry over — **composition, hierarchy, spacing, editorial character** — are:
+## 3. 品牌标记
 
-- **Split-page structure.** Image field on top, type field below. The two halves do different jobs.
-- **Image = atmosphere, type = message.** The photograph is not decorative filler, but it also does not carry the argument; the headline does.
-- **One dominant typographic element.** There is one big statement, not five competing blocks.
-- **Minimal supporting information.** A small amount of secondary text, placed quietly.
-- **Print character.** Restraint, ruled lines, editorial type treatment — not social-media gloss.
+- **logo 顶部居中、放大（84px 高），每张图都有。** 找不到 logo.png 时回退「ELITE」字标。
 
-Do **not** copy the reference's original branding, wording, subject matter, or its cream/paper background. Those are not ELITE.
+## 4. 封面（首图）
 
-## 2. Adapting to Midnight Sky
+自上而下、用 `space-between` 均匀分布占满整页，不留大片空白、不堆叠：
 
-The reference is light-on-dark reversed into dark-on-light. The adaptation:
+1. logo（居中）
+2. 来源图（截图/真图，**完整显示不裁剪** `height:auto`）
+3. 大标题（66px，加粗，最显眼）
+4. 作者/来源（26px，次级灰）
+5. 底部一段话总结（30px，行距 1.7，顶部细分隔线）
 
-| Reference element | ELITE adaptation |
-|-------------------|------------------|
-| Cream paper field | Midnight Sky `#16151D` background |
-| Near-black ink text | Warm white `#F2EFE9` primary text |
-| Muted print gray | Light gray `#A9A6A0` / muted `#6F6C69` |
-| (none — new) | Champagne `#D4AF37` (default) or silver `#C7C5BF` (alternative) as restrained accent |
-| Print texture | Optional very subtle grain on the type field; never a cream/light background |
+封面整体占满、不留底边空白。无真图时用「来源名 + 作者」占位块（之后可补）。
 
-The print character survives through composition and typography, not through a literal paper color.
+## 5. 正文卡片
 
-## 3. Canvas
+- logo（居中）→ 小节主题（54px 加粗，**左侧金色竖条** 6px）→ 正文段落。
+- 正文 46px、行距 1.75，段间距 36px。
+- 重点句用**金色半透明底高亮**（每节 1-3 处，不整段标）。
+- **自动分页**：把整篇长文按容量贪心装进卡片，填到接近底部才换下一张；标题不孤立在页尾。
+- 页码（如 2/6）在右上角次级灰。
 
-- **3:4 portrait** — `1080 × 1440` (Xiaohongshu standard).
-- Render at **@2x** (`2160 × 2880`) for export.
-- This is the same canvas the existing ELITE carousel pipeline uses; keep it consistent.
+## 6. 禁止
 
-## 4. Layout system
+- ❌ 无视觉中心、复杂拼贴、大量小字。
+- ❌ 重点整段高亮、高亮当装饰。
+- ❌ 标题与内容不符（标题党）。
+- ❌ 硬广 / CTA。
 
-### Cover (first image)
+## 7. 渲染
 
-Split-page editorial composition:
+写 `carousel.json`（title/author/source/screenshot/summary/sections），运行：
 
-- **Upper field (~40-45% height):** full-bleed image. Muted, dark-leaning, atmosphere-first. A subject photograph, a screenshot (uncropped, kept in full), or a restrained abstract. No text on top of the image unless it is a deliberate, legible overlay.
-- **Lower field (~55-60% height):** Midnight Sky type field. Contains, top to bottom:
-  1. A small kicker: the pillar label (`WORLD` / `BUSINESS` / `CAPITAL` / `BUILD`) in small caps or spaced letters, in accent or muted color.
-  2. The **cover headline** — the single dominant element. Large, tight leading, warm white.
-  3. Supporting copy (one or two short lines): source/author/date, or the one-sentence takeaway.
-- **Spacing:** distribute the lower field with generous, even negative space. Do not cram to fill; do not leave a ragged bottom.
+```
+python3 scripts/render_carousel.py carousel.json
+```
 
-### Content slides (carousel body)
-
-- Midnight Sky background throughout.
-- One idea per card. No card does two jobs.
-- A small structural marker (pillar label or slide index) in accent/muted, kept tiny.
-- Body text in warm white, secondary lines in light gray; emphasis via champagne highlight (a half-opacity tint behind a phrase, or an accent-colored key line — not whole-paragraph highlighting).
-- Slide text fills toward the bottom naturally; never leave a card half-empty with a big dead gap, and never overflow.
-
-## 5. Typography hierarchy
-
-- **Typeface:** PingFang SC (system). For the Latin/English kicker, a serif or letterspaced small caps reads more "magazine" than a bold sans; a restrained didone-style serif is preferred for pillar labels.
-- **Weights:** heavy/medium for headlines, regular for body, light for captions.
-
-| Level | Size (on 1080×1440) | Weight | Color |
-|-------|---------------------|--------|-------|
-| Kicker / pillar label | ~36px, letterspaced | regular | accent or `muted` |
-| Cover headline | ~88-120px | semibold/bold | `warm-white` |
-| Section heading (slide) | ~64-84px | semibold | `warm-white` |
-| Body | ~40-48px, line-height ~1.7 | regular | `warm-white` |
-| Secondary / meta | ~32-36px | regular | `light-gray` |
-| Caption / footnote | ~28px | regular | `muted` |
-
-Sizes are starting points, not locks — the headline size wins over everything else. Do not set body text so small it becomes a wall of gray.
-
-## 6. Image direction
-
-- **Editorial photography** (moody, real, imperfect) over glossy stock.
-- Muted/dark palettes that sit naturally on Midnight Sky; avoid saturated, busy, or "stock-y" imagery.
-- A screenshot may serve as the upper-field image when the post is about a specific source or product — show it fully, uncropped.
-- The image sets atmosphere; the headline carries the message. Never rely on the image to convey the argument.
-
-## 7. Do / Don't
-
-**Do:**
-- Let the headline dominate.
-- Keep one accent color, used sparingly.
-- Use generous negative space.
-- Keep the split-page structure on covers.
-
-**Don't:**
-- ❌ Generic AI-template look: rounded cards, gradients, emoji, drop shadows, sticker badges.
-- ❌ Cheap luxury: gold foiling, marble, crown/laurel motifs, "premium" stock clichés.
-- ❌ Change `#16151D` to another dark.
-- ❌ Decorative borders, frames, or backgrounds around the whole card.
-- ❌ Over-highlight body text (whole paragraphs in accent).
-- ❌ Type over busy imagery (unreadable = rejected).
+输出到 `~/ELITE/组图/<slug>/`，自动复制桌面副本。检查：每张 2160×2880、正文填到接近底部（内容最低 y > 画布高 70%）、中文正常、无溢出裁剪。
